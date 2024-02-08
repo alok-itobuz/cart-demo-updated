@@ -1,5 +1,3 @@
-import products from "../data/prod.mjs";
-
 const cartCardContainer = document.querySelector(".cart-card-container");
 
 function createCard(id, imagePath, imageAlt, price, title, count) {
@@ -9,7 +7,7 @@ function createCard(id, imagePath, imageAlt, price, title, count) {
   </div>
   <div class="text-container">
     <h3>${title}</h3>
-    <p class="price">$ ${price * count}</p>
+    <p class="price price-${id}">$ ${price * count}</p>
     <div class="card-buttons card-buttons-${id}">
       <button class="decrease">-</button>
       <p class="item-count">${count}</p>
@@ -19,20 +17,13 @@ function createCard(id, imagePath, imageAlt, price, title, count) {
 </div>`;
 }
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart"));
 
-cart = [
-  { count: 3, product: products[0] },
-  { count: 1, product: products[3] },
-  { count: 7, product: products[6] },
-  { count: 9, product: products[10] },
-  { count: 2, product: products[15] },
-];
 function renderCards() {
   cartCardContainer.innerHTML = "";
-  cart.forEach(({ count, product }) => {
+  cart.forEach(({ count, product }, i) => {
     const card = createCard(
-      product.id,
+      i + 1,
       product.image,
       product.title,
       product.price,
@@ -45,7 +36,6 @@ function renderCards() {
   const cardBtns = Array.from(document.querySelectorAll(".card-buttons"));
 
   cardBtns.forEach((cardBtn, i) => {
-    console.dir(cardBtn.parentNode.parentNode);
     const [decrease, text, increase] = [...cardBtn.children];
 
     let cartProduct = cart[i];
@@ -56,11 +46,12 @@ function renderCards() {
         cart = cart.filter((c, index) => i !== index);
         renderCards();
       }
+      localStorage.setItem("cart", JSON.stringify(cart));
     });
     increase.addEventListener("click", function (e) {
       cartProduct.count++;
+      localStorage.setItem("cart", JSON.stringify(cart));
       text.textContent = cartProduct.count;
-      console.log(cart);
     });
   });
 }
