@@ -1,35 +1,32 @@
+import {
+  getItemFromLocalStorage,
+  displayNoItem,
+  createCard,
+} from "./components/helper.mjs";
+
 const cartCardContainer = document.querySelector(".cart-card-container");
 
-function createCard(id, imagePath, imageAlt, price, title, count) {
-  return `<div class="card">
-  <div class="image-container">
-    <img src="${imagePath}" alt="${imageAlt}" />
-  </div>
-  <div class="text-container">
-    <h3>${title}</h3>
-    <p class="price price-${id}">$ ${price * count}</p>
-    <div class="card-buttons card-buttons-${id}">
-      <button class="decrease">-</button>
-      <p class="item-count">${count}</p>
-      <button class="increase">+</button>
-    </div>
-  </div>
-</div>`;
+let cart = getItemFromLocalStorage("cart");
+
+displayNoItem(cartCardContainer, false);
+
+function renderFooter() {
+  const totalItems = document.querySelector(".total-items");
+  const totalPrice = document.querySelector(".total-price");
+
+  totalItems.textContent = `: ${cart.length}`;
+  totalPrice.textContent = `: $${cart.reduce(
+    (acc, { product: { price } }) => acc + price,
+    0
+  )}`;
 }
 
-let cart = JSON.parse(localStorage.getItem("cart"));
-
-function renderCards() {
+function renderPage() {
   cartCardContainer.innerHTML = "";
-  cart.forEach(({ count, product }, i) => {
-    const card = createCard(
-      i + 1,
-      product.image,
-      product.title,
-      product.price,
-      product.title,
-      count
-    );
+  renderFooter();
+
+  cart.forEach(({ count, product: { image, title, price } }, i) => {
+    const card = createCard(i + 1, image, title, price, title, count, false);
     cartCardContainer.insertAdjacentHTML("beforeend", card);
   });
 
@@ -44,15 +41,24 @@ function renderCards() {
       text.textContent = cartProduct.count;
       if (cartProduct.count == 0) {
         cart = cart.filter((c, index) => i !== index);
-        renderCards();
+        renderPage();
+        if (cart.length === 0) {
+          displayNoItem(cartCardContainer, false);
+        }
       }
       localStorage.setItem("cart", JSON.stringify(cart));
+      renderFooter();
     });
     increase.addEventListener("click", function (e) {
       cartProduct.count++;
       localStorage.setItem("cart", JSON.stringify(cart));
+      renderFooter();
       text.textContent = cartProduct.count;
     });
   });
 }
-renderCards();
+if (cart.length === 0) {
+  displayNoItem(cartCardContainer, false);
+} else {
+  renderPage();
+}

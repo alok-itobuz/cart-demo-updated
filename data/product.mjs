@@ -1,3 +1,4 @@
+// const products = [];
 const products = [
   {
     id: 1,
