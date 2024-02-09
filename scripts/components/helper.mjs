@@ -29,16 +29,13 @@ function createCard(
     <div class="text-container">
       <h3>${title}</h3>
       <p class="price">$ ${price}</p>
-    ${
-      showAddToCart
-        ? `<button class="add-to-cart add-to-cart-${id} ${
-            count !== 0 ? "display-none" : ""
-          }">Add to cart</button>`
-        : ""
+    ${showAddToCart
+      ? `<button class="add-to-cart add-to-cart-${id} ${count !== 0 ? "display-none" : ""
+      }">Add to cart</button>`
+      : ""
     }
-      <div class="card-buttons card-buttons-${id} ${
-    count === 0 ? "display-none" : ""
-  }">
+      <div class="card-buttons card-buttons-${id} ${count === 0 ? "display-none" : ""
+    }">
         <button class="decrease">-</button>
         <p class="item-count">${count}</p>
         <button class="increase">+</button>
