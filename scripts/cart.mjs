@@ -16,7 +16,7 @@ function renderFooter() {
 
   totalItems.textContent = `: ${cart.length}`;
   totalPrice.textContent = `: $${cart.reduce(
-    (acc, { product: { price } }) => acc + price,
+    (acc, {count,  product: { price } }) => acc + price * count,
     0
   )}`;
 }
@@ -46,11 +46,13 @@ function renderPage() {
           displayNoItem(cartCardContainer, false);
         }
       }
+      renderFooter()
       localStorage.setItem("cart", JSON.stringify(cart));
       renderFooter();
     });
     increase.addEventListener("click", function (e) {
       cartProduct.count++;
+      renderFooter()
       localStorage.setItem("cart", JSON.stringify(cart));
       renderFooter();
       text.textContent = cartProduct.count;

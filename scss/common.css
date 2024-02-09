@@ -28,7 +28,6 @@ nav {
   align-items: center;
   justify-content: end;
 }
-
 nav .route-link {
   text-align: center;
   width: 6rem;
@@ -40,7 +39,6 @@ nav .route-link {
   border: 1px solid #fff;
   transform-style: preserve-3d;
 }
-
 nav .route-link:hover {
   transform: rotateX(20deg);
   border: 1px solid transparent;
@@ -54,7 +52,6 @@ nav .route-link:hover {
   justify-content: center;
   flex-wrap: wrap;
 }
-
 .card-container .card {
   flex: 1 0 17rem;
   max-width: 17rem;
@@ -67,22 +64,19 @@ nav .route-link:hover {
   border-radius: 0.5rem;
   overflow: hidden;
 }
-
 .card-container .card .image-container {
   overflow: hidden;
   width: 100%;
-  height: 45%;
+  height: 55%;
 }
-
 .card-container .card .image-container img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
-
 .card-container .card .text-container {
   flex: 1;
   padding: 0.5rem;
@@ -94,29 +88,25 @@ nav .route-link:hover {
   align-items: center;
   color: #fff;
 }
-
 .card-container .card .text-container h3 {
   font-size: 1.6rem;
 }
-
 .card-container .card .text-container p {
   font-size: 1.3rem;
   font-weight: lighter;
 }
-
 .card-container .card .text-container .add-to-cart {
   width: 7rem;
+  height: 2.5rem;
   padding: 0.5rem 0.6rem;
   font-weight: bold;
   font-size: 1rem;
   border-radius: 0.2rem;
   border: none;
 }
-
 .card-container .card .text-container .add-to-cart:hover {
   cursor: pointer;
 }
-
 .card-container .card .text-container .card-buttons {
   display: flex;
   align-items: center;
@@ -125,7 +115,6 @@ nav .route-link:hover {
   width: 100%;
   height: 2.5rem;
 }
-
 .card-container .card .text-container .card-buttons button,
 .card-container .card .text-container .card-buttons p {
   height: 100%;
@@ -137,11 +126,9 @@ nav .route-link:hover {
   border: none;
   border-radius: 4px;
 }
-
 .card-container .card .text-container .card-buttons button {
   border: 2px solid #fff;
 }
-
 .card-container .card .text-container .card-buttons button:hover {
   cursor: pointer;
   box-shadow: 0 0 2rem -0.5rem #cf0808;
@@ -158,17 +145,14 @@ nav .route-link:hover {
   padding: 1rem 3rem;
   color: #fff;
 }
-
-.cart-details-container>div {
+.cart-details-container > div {
   display: flex;
   align-items: center;
   font-size: 1.1rem;
 }
-
-.cart-details-container>div span:first-child {
+.cart-details-container > div span:first-child {
   width: 10rem;
 }
-
 .cart-details-container button {
   width: -moz-fit-content;
   width: fit-content;
@@ -180,12 +164,9 @@ nav .route-link:hover {
   border-radius: 2px;
   color: #fff;
 }
-
 .cart-details-container button:hover {
   cursor: pointer;
   transform: rotateX(-20deg);
   border: 1px solid transparent;
   box-shadow: 0px -6px 6px -3px #ffffff;
-}
-
-/*# sourceMappingURL=common.css.map */
+}/*# sourceMappingURL=common.css.map */
