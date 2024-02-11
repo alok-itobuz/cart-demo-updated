@@ -24,7 +24,8 @@ products.forEach(({ id, image, title, price }, i) => {
     cart.find((c) => c.product.id === id)?.count ?? 0,
     true
   );
-  homeCardContainer.insertAdjacentHTML("beforeend", card);
+  // homeCardContainer.insertAdjacentHTML("beforeend", card);
+  homeCardContainer.appendChild(card);
 });
 
 const cards = document.querySelectorAll(".card");

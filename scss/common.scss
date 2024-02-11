@@ -19,6 +19,7 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 nav {
@@ -159,7 +160,7 @@ nav {
   padding: 1rem 3rem;
   color: #fff;
 
-  >div {
+  > div {
     display: flex;
     align-items: center;
     font-size: 1.1rem;

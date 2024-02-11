@@ -16,7 +16,7 @@ function renderFooter() {
 
   totalItems.textContent = `: ${cart.length}`;
   totalPrice.textContent = `: $${cart.reduce(
-    (acc, {count,  product: { price } }) => acc + price * count,
+    (acc, { count, product: { price } }) => acc + price * count,
     0
   )}`;
 }
@@ -27,7 +27,8 @@ function renderPage() {
 
   cart.forEach(({ count, product: { image, title, price } }, i) => {
     const card = createCard(i + 1, image, title, price, title, count, false);
-    cartCardContainer.insertAdjacentHTML("beforeend", card);
+    // cartCardContainer.insertAdjacentHTML("beforeend", card);
+    cartCardContainer.appendChild(card);
   });
 
   const cardBtns = Array.from(document.querySelectorAll(".card-buttons"));
@@ -46,13 +47,13 @@ function renderPage() {
           displayNoItem(cartCardContainer, false);
         }
       }
-      renderFooter()
+      renderFooter();
       localStorage.setItem("cart", JSON.stringify(cart));
       renderFooter();
     });
     increase.addEventListener("click", function (e) {
       cartProduct.count++;
-      renderFooter()
+      renderFooter();
       localStorage.setItem("cart", JSON.stringify(cart));
       renderFooter();
       text.textContent = cartProduct.count;
