@@ -19,6 +19,7 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 nav {
@@ -153,7 +154,12 @@ nav .route-link:hover {
 .cart-details-container > div span:first-child {
   width: 10rem;
 }
-.cart-details-container button {
+.cart-details-container .button-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cart-details-container .button-container button {
   width: -moz-fit-content;
   width: fit-content;
   padding: 0.5rem 1rem;
@@ -164,7 +170,7 @@ nav .route-link:hover {
   border-radius: 2px;
   color: #fff;
 }
-.cart-details-container button:hover {
+.cart-details-container .button-container button:hover {
   cursor: pointer;
   transform: rotateX(-20deg);
   border: 1px solid transparent;

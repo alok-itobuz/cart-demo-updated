@@ -172,21 +172,26 @@ nav {
     }
   }
 
-  button {
-    width: fit-content;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    border: 1px solid #fff;
-    transform-style: preserve-3d;
-    background: transparent;
-    border-radius: 2px;
-    color: #fff;
+  .button-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    button {
+      width: fit-content;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      border: 1px solid #fff;
+      transform-style: preserve-3d;
+      background: transparent;
+      border-radius: 2px;
+      color: #fff;
 
-    &:hover {
-      cursor: pointer;
-      transform: rotateX(-20deg);
-      border: 1px solid transparent;
-      box-shadow: 0px -6px 6px -3px #ffffff;
+      &:hover {
+        cursor: pointer;
+        transform: rotateX(-20deg);
+        border: 1px solid transparent;
+        box-shadow: 0px -6px 6px -3px #ffffff;
+      }
     }
   }
 }

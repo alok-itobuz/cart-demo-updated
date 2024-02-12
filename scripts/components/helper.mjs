@@ -1,111 +1,105 @@
-function getItemFromLocalStorage(str) {
-  return localStorage.getItem(str) == null
+// Constants
+export const page = {
+  HOME: "home",
+  CART: "cart",
+};
+
+// fetching localstorage
+export function getItemFromLocalStorage(key) {
+  return localStorage.getItem(key) == null
     ? []
-    : Array.from(JSON.parse(localStorage.getItem("cart")));
+    : Array.from(JSON.parse(localStorage.getItem(key)));
 }
 
-function displayNoItem(parentElement, isHome) {
+// updating localstorage
+export function updateLocalStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// when there is no product, display no item
+export function displayNoItem(parentElement, currPage) {
   const noProduct = document.createElement("h1");
-  noProduct.innerHTML = isHome
-    ? "Sorry, there is no products at this time<br /> So sorry for the incovenience."
-    : "You have not added <br/> any item in the cart....<br/><br/>Please add some.";
+  noProduct.innerHTML =
+    currPage === page.HOME
+      ? "Sorry, there is no products at this time<br /> So sorry for the incovenience."
+      : "You have not added <br/> any item in the cart....<br/><br/>Please add some.";
   parentElement.innerHTML = "";
   parentElement.appendChild(noProduct);
 }
 
-function createCard(
-  id,
-  imagePath,
-  imageAlt,
-  price,
-  title,
-  count,
-  showAddToCart
-) {
-  // return `<div class="card">
-  //   <div class="image-container">
-  //     <img src="${imagePath}" alt="${imageAlt}" />
-  //   </div>
-  //   <div class="text-container">
-  //     <h3>${title}</h3>
-  //     <p class="price">$ ${price}</p>
-  //   ${
-  //     showAddToCart
-  //       ? `<button class="add-to-cart add-to-cart-${id} ${
-  //           count !== 0 ? "display-none" : ""
-  //         }">Add to cart</button>`
-  //       : ""
-  //   }
-  //     <div class="card-buttons card-buttons-${id} ${
-  //   count === 0 ? "display-none" : ""
-  // }">
-  //       <button class="decrease">-</button>
-  //       <p class="item-count">${count}</p>
-  //       <button class="increase">+</button>
-  //     </div>
-  //   </div>
-  // </div>`;
+// render footer in cart page
+export function renderFooter(cart) {
+  const totalItems = document.querySelector(".total-items");
+  const totalPrice = document.querySelector(".total-price");
 
-  const card = document.createElement("div");
-  card.classList.add("card");
-
-  // image container
-  const imageContainer = document.createElement("div");
-  imageContainer.classList.add("image-container");
-  const cardImage = document.createElement("img");
-  cardImage.src = imagePath;
-  cardImage.alt = imageAlt;
-  imageContainer.appendChild(cardImage);
-  card.appendChild(imageContainer);
-
-  // text container
-  const textContainer = document.createElement("div");
-  textContainer.classList.add("text-container");
-  const titleHeading = document.createElement("h3");
-  titleHeading.innerText = title;
-  // ----
-  const titleDescription = document.createElement("p");
-  titleDescription.classList.add("price");
-  titleDescription.innerText = price;
-  // adding heading and description to text container.
-  textContainer.appendChild(titleHeading);
-  textContainer.appendChild(titleDescription);
-
-  // add to cart button
-  const btnAddToCart = document.createElement("button");
-  btnAddToCart.classList.add("add-to-cart", `add-to-cart-${id}`);
-
-  count ? btnAddToCart.classList.add("display-none") : "";
-  btnAddToCart.innerText = "Add to Cart";
-  showAddToCart ? textContainer.appendChild(btnAddToCart) : "";
-
-  textContainer.appendChild(btnAddToCart);
-
-  // card buttons
-  const cardButtons = document.createElement("div");
-  cardButtons.classList.add("card-buttons", `card-buttons-${id}`);
-  count ? "" : cardButtons.classList.add("display-none");
-  const addQuantityBtn = document.createElement("button");
-  addQuantityBtn.classList.add("increase");
-  addQuantityBtn.innerText = "+";
-
-  const itemCountText = document.createElement("p");
-  itemCountText.classList.add("item-count");
-  itemCountText.innerText = count;
-
-  const removeQuantityBtn = document.createElement("button");
-  removeQuantityBtn.classList.add("decrease");
-  removeQuantityBtn.innerText = "-";
-
-  cardButtons.appendChild(removeQuantityBtn);
-  cardButtons.appendChild(itemCountText);
-  cardButtons.appendChild(addQuantityBtn);
-
-  textContainer.appendChild(cardButtons);
-
-  card.appendChild(textContainer);
-
-  return card;
+  totalItems.textContent = `: ${cart.length}`;
+  totalPrice.textContent = `: $${cart.reduce(
+    (acc, { count, product: { price } }) => acc + price * count,
+    0
+  )}`;
 }
 
-export { getItemFromLocalStorage, displayNoItem, createCard };
+// event listners on clicking any buttons (add-to-cart or change-quantity)
+export function clickEventListener(products, cart, currPage) {
+  const cardContainer = document.querySelector(".card-container");
+
+  cardContainer.addEventListener("click", function (e) {
+    if (e.target.tagName.toLowerCase() !== "button") {
+      return;
+    }
+
+    const currBtn = e.target;
+    const currId = currBtn.dataset.id;
+    const currCard = Array.from(document.querySelectorAll(".card")).find(
+      (c) => c.dataset.id === currId
+    );
+    const btnAddToCart = currCard.querySelector(".add-to-cart");
+    const cardButtons = currCard.querySelector(".card-buttons");
+    const textQuantity = cardButtons.querySelector(".item-count");
+
+    function addToCartClicked() {
+      btnAddToCart.classList.add("display-none");
+      cardButtons.classList.remove("display-none");
+
+      const cartProduct = {
+        product: products.slice().find((p) => p.id == currId),
+        count: 1,
+      };
+      cart.push(cartProduct);
+      textQuantity.innerHTML = 1;
+      updateLocalStorage("cart", cart);
+    }
+
+    function changeQuantityClicked() {
+      const cartProduct = cart.find((c) => c.product.id == currId);
+      if (currBtn.classList.contains("remove-quantity")) {
+        cartProduct.count--;
+        if (!cartProduct.count) {
+          if (currPage === page.HOME) {
+            btnAddToCart.classList.remove("display-none");
+            cardButtons.classList.add("display-none");
+          } else {
+            currCard.remove();
+            if (cart.length === 1) {
+              displayNoItem(cardContainer, currPage);
+            }
+          }
+        }
+        cart = cart.filter((c) => c.count !== 0);
+      } else {
+        cartProduct.count++;
+      }
+      textQuantity.innerText = cartProduct.count;
+      updateLocalStorage("cart", cart);
+    }
+
+    if (currBtn.dataset.btnType === "add-to-cart") {
+      addToCartClicked();
+    } else {
+      changeQuantityClicked();
+      if (currPage === page.CART) {
+        renderFooter(cart);
+      }
+    }
+  });
+}
