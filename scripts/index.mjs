@@ -9,7 +9,9 @@ import {
 
 const homeCardContainer = document.querySelector(".home-card-container");
 
-let cart = getItemFromLocalStorage("cart");
+console.log(products);
+
+const cart = getItemFromLocalStorage("cart");
 
 if (products.length === 0) {
   displayNoItem(homeCardContainer, page.HOME);
@@ -22,7 +24,6 @@ products.forEach(({ id, image, title, price }, i) => {
     title,
     price,
     title,
-    // if product is found in the cart, then don't display the add to cart button.
     cart.find((c) => c.product.id === id)?.count ?? 0,
     true
   );

@@ -6,7 +6,7 @@ export const page = {
 
 // fetching localstorage
 export function getItemFromLocalStorage(key) {
-  return localStorage.getItem(key) == null
+  return !localStorage.getItem(key)
     ? []
     : Array.from(JSON.parse(localStorage.getItem(key)));
 }

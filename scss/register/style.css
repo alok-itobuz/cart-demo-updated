@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(#01999c 20%, #caffdc 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#form {
+  width: 100%;
+  max-width: 43rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: min(5%, 5rem);
+  background: #5b24a8;
+  border-radius: 10px;
+}
+#form input {
+  color: #040503;
+}
+#form input::-moz-placeholder {
+  color: #040503;
+}
+#form input::placeholder {
+  color: #040503;
+}
+#form input:focus {
+  outline: none;
+}
+#form input,
+#form button {
+  width: 100%;
+  font-size: min(6vw, 1.6rem);
+  padding: 1.4rem;
+  border-radius: 5px;
+  border: none;
+  background: #ffe0f2;
+}
+#form .get-otp-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#form .get-otp-container span {
+  visibility: hidden;
+  font-size: min(6vw, 1.6rem);
+  color: #fff;
+}
+#form button:hover {
+  cursor: pointer;
+}
+#form button.btn-get-otp {
+  width: -moz-fit-content;
+  width: fit-content;
+  border: none;
+  color: rgb(238, 248, 179);
+  background: none;
+  align-self: flex-start;
+  padding: 1.4rem 0;
+}
+#form button.btn-get-otp:hover {
+  text-decoration: underline;
+}
+#form button.btn-register {
+  background: #01b5c6;
+  color: #fff;
+}
+#form button.btn-register:hover {
+  box-shadow: 0 0 10px #01b5c6;
+}/*# sourceMappingURL=style.css.map */

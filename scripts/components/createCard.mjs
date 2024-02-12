@@ -1,3 +1,5 @@
+function createCustomizedElement(tagName, classNames, attributes, innerText) {}
+
 export default function createCard(
   id,
   imagePath,

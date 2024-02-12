@@ -1,5 +1,4 @@
-// const products = [];
-const products = [
+export default (() => [
   {
     id: 1,
     title: "Fjallraven",
@@ -201,5 +200,4 @@ const products = [
     image: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
     rating: { rate: 3.6, count: 145 },
   },
-];
-export default products;
+])();
