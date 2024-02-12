@@ -4,16 +4,29 @@ export const page = {
   CART: "cart",
 };
 
+export const keys = {
+  OTP: "otp",
+  USERS: "users",
+  CURRENT_USER: "curr_user",
+};
+
 // fetching localstorage
-export function getItemFromLocalStorage(key) {
-  return !localStorage.getItem(key)
-    ? []
-    : Array.from(JSON.parse(localStorage.getItem(key)));
+export function getLocalstorage(key) {
+  return JSON.parse(localStorage.getItem(key));
 }
 
 // updating localstorage
-export function updateLocalStorage(key, data) {
+export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+// If current user exist then redirect to index page
+export function redirectToIndex() {
+  const currentUser = getLocalstorage(keys.CURRENT_USER);
+  if (currentUser) {
+    location.href = `${location.origin}/pages/index.html`;
+    return;
+  }
 }
 
 // when there is no product, display no item
@@ -28,19 +41,19 @@ export function displayNoItem(parentElement, currPage) {
 }
 
 // render footer in cart page
-export function renderFooter(cart) {
+export function renderFooter(userCart) {
   const totalItems = document.querySelector(".total-items");
   const totalPrice = document.querySelector(".total-price");
 
-  totalItems.textContent = `: ${cart.length}`;
-  totalPrice.textContent = `: $${cart.reduce(
+  totalItems.textContent = `: ${userCart.length}`;
+  totalPrice.textContent = `: $${userCart.reduce(
     (acc, { count, product: { price } }) => acc + price * count,
     0
   )}`;
 }
 
 // event listners on clicking any buttons (add-to-cart or change-quantity)
-export function clickEventListener(products, cart, currPage) {
+export function clickEventListener(email, products, cart, currPage) {
   const cardContainer = document.querySelector(".card-container");
 
   cardContainer.addEventListener("click", function (e) {
@@ -57,7 +70,9 @@ export function clickEventListener(products, cart, currPage) {
     const cardButtons = currCard.querySelector(".card-buttons");
     const textQuantity = cardButtons.querySelector(".item-count");
 
+    // add to cart button clicked funtion
     function addToCartClicked() {
+      if (!cart[email]) cart[email] = [];
       btnAddToCart.classList.add("display-none");
       cardButtons.classList.remove("display-none");
 
@@ -65,13 +80,14 @@ export function clickEventListener(products, cart, currPage) {
         product: products.slice().find((p) => p.id == currId),
         count: 1,
       };
-      cart.push(cartProduct);
+      cart[email].push(cartProduct);
       textQuantity.innerHTML = 1;
-      updateLocalStorage("cart", cart);
+      setLocalStorage("cart", cart);
     }
 
+    // change quantity button clicked funtion
     function changeQuantityClicked() {
-      const cartProduct = cart.find((c) => c.product.id == currId);
+      const cartProduct = cart[email].find((c) => c.product.id == currId);
       if (currBtn.classList.contains("remove-quantity")) {
         cartProduct.count--;
         if (!cartProduct.count) {
@@ -80,26 +96,95 @@ export function clickEventListener(products, cart, currPage) {
             cardButtons.classList.add("display-none");
           } else {
             currCard.remove();
-            if (cart.length === 1) {
+            if (cart[email].length === 1) {
               displayNoItem(cardContainer, currPage);
             }
           }
         }
-        cart = cart.filter((c) => c.count !== 0);
+        cart[email] = cart[email].filter((c) => c.count !== 0);
       } else {
         cartProduct.count++;
       }
       textQuantity.innerText = cartProduct.count;
-      updateLocalStorage("cart", cart);
+      setLocalStorage("cart", cart);
     }
 
+    // calling the functions according to the buttons
     if (currBtn.dataset.btnType === "add-to-cart") {
       addToCartClicked();
     } else {
       changeQuantityClicked();
       if (currPage === page.CART) {
-        renderFooter(cart);
+        renderFooter(cart[email]);
       }
     }
   });
 }
+
+////////////////////////////////
+////////////////////////////////
+////////////////////////////////
+
+// export function clickEventListener(products, cart, currPage) {
+//   const cardContainer = document.querySelector(".card-container");
+
+//   cardContainer.addEventListener("click", function (e) {
+//     if (e.target.tagName.toLowerCase() !== "button") {
+//       return;
+//     }
+
+//     const currBtn = e.target;
+//     const currId = currBtn.dataset.id;
+//     const currCard = Array.from(document.querySelectorAll(".card")).find(
+//       (c) => c.dataset.id === currId
+//     );
+//     const btnAddToCart = currCard.querySelector(".add-to-cart");
+//     const cardButtons = currCard.querySelector(".card-buttons");
+//     const textQuantity = cardButtons.querySelector(".item-count");
+
+//     function addToCartClicked() {
+//       btnAddToCart.classList.add("display-none");
+//       cardButtons.classList.remove("display-none");
+
+//       const cartProduct = {
+//         product: products.slice().find((p) => p.id == currId),
+//         count: 1,
+//       };
+//       cart.push(cartProduct);
+//       textQuantity.innerHTML = 1;
+//       setLocalStorage("cart", cart);
+//     }
+
+//     function changeQuantityClicked() {
+//       const cartProduct = cart.find((c) => c.product.id == currId);
+//       if (currBtn.classList.contains("remove-quantity")) {
+//         cartProduct.count--;
+//         if (!cartProduct.count) {
+//           if (currPage === page.HOME) {
+//             btnAddToCart.classList.remove("display-none");
+//             cardButtons.classList.add("display-none");
+//           } else {
+//             currCard.remove();
+//             if (cart.length === 1) {
+//               displayNoItem(cardContainer, currPage);
+//             }
+//           }
+//         }
+//         cart = cart.filter((c) => c.count !== 0);
+//       } else {
+//         cartProduct.count++;
+//       }
+//       textQuantity.innerText = cartProduct.count;
+//       setLocalStorage("cart", cart);
+//     }
+
+//     if (currBtn.dataset.btnType === "add-to-cart") {
+//       addToCartClicked();
+//     } else {
+//       changeQuantityClicked();
+//       if (currPage === page.CART) {
+//         renderFooter(cart);
+//       }
+//     }
+//   });
+// }
