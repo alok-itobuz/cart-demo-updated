@@ -25,6 +25,7 @@ loginForm.addEventListener("submit", function (e) {
 
   if (!email || !password) {
     alert(`email and password fields can't be left empty`);
+    return;
   }
 
   const currentUser = getLocalstorage(keys.USERS)[email];
