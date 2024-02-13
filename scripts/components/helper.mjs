@@ -20,6 +20,19 @@ export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
+function setLocalStorageAndUpdateCartItem(
+  key,
+  data,
+  currPage,
+  textSpanItem,
+  email
+) {
+  setLocalStorage(key, data);
+  if (currPage == page.HOME) {
+    textSpanItem.innerText = data[email]?.length || 0;
+  }
+}
+
 // If current user exist then redirect to index page
 export function redirectToIndex() {
   const currentUser = getLocalstorage(keys.CURRENT_USER);
@@ -53,7 +66,14 @@ export function renderFooter(userCart) {
 }
 
 // event listners on clicking any buttons (add-to-cart or change-quantity)
-export function clickEventListener(email, products, cart, currPage) {
+export function clickEventListener(
+  email,
+  products,
+  cart,
+  currPage,
+  btnLogout,
+  textSpanItem
+) {
   const cardContainer = document.querySelector(".card-container");
 
   cardContainer.addEventListener("click", function (e) {
@@ -82,10 +102,15 @@ export function clickEventListener(email, products, cart, currPage) {
       };
       cart[email].push(cartProduct);
       textQuantity.innerHTML = 1;
-      setLocalStorage("cart", cart);
+      setLocalStorageAndUpdateCartItem(
+        "cart",
+        cart,
+        currPage,
+        textSpanItem,
+        email
+      );
     }
 
-    // change quantity button clicked funtion
     function changeQuantityClicked() {
       const cartProduct = cart[email].find((c) => c.product.id == currId);
       if (currBtn.classList.contains("remove-quantity")) {
@@ -106,10 +131,15 @@ export function clickEventListener(email, products, cart, currPage) {
         cartProduct.count++;
       }
       textQuantity.innerText = cartProduct.count;
-      setLocalStorage("cart", cart);
+      setLocalStorageAndUpdateCartItem(
+        "cart",
+        cart,
+        currPage,
+        textSpanItem,
+        email
+      );
     }
 
-    // calling the functions according to the buttons
     if (currBtn.dataset.btnType === "add-to-cart") {
       addToCartClicked();
     } else {
@@ -119,72 +149,10 @@ export function clickEventListener(email, products, cart, currPage) {
       }
     }
   });
+
+  btnLogout.addEventListener("click", function (e) {
+    e.preventDefault();
+    localStorage.removeItem(keys.CURRENT_USER);
+    location.href = `${location.origin}/pages/login.html`;
+  });
 }
-
-////////////////////////////////
-////////////////////////////////
-////////////////////////////////
-
-// export function clickEventListener(products, cart, currPage) {
-//   const cardContainer = document.querySelector(".card-container");
-
-//   cardContainer.addEventListener("click", function (e) {
-//     if (e.target.tagName.toLowerCase() !== "button") {
-//       return;
-//     }
-
-//     const currBtn = e.target;
-//     const currId = currBtn.dataset.id;
-//     const currCard = Array.from(document.querySelectorAll(".card")).find(
-//       (c) => c.dataset.id === currId
-//     );
-//     const btnAddToCart = currCard.querySelector(".add-to-cart");
-//     const cardButtons = currCard.querySelector(".card-buttons");
-//     const textQuantity = cardButtons.querySelector(".item-count");
-
-//     function addToCartClicked() {
-//       btnAddToCart.classList.add("display-none");
-//       cardButtons.classList.remove("display-none");
-
-//       const cartProduct = {
-//         product: products.slice().find((p) => p.id == currId),
-//         count: 1,
-//       };
-//       cart.push(cartProduct);
-//       textQuantity.innerHTML = 1;
-//       setLocalStorage("cart", cart);
-//     }
-
-//     function changeQuantityClicked() {
-//       const cartProduct = cart.find((c) => c.product.id == currId);
-//       if (currBtn.classList.contains("remove-quantity")) {
-//         cartProduct.count--;
-//         if (!cartProduct.count) {
-//           if (currPage === page.HOME) {
-//             btnAddToCart.classList.remove("display-none");
-//             cardButtons.classList.add("display-none");
-//           } else {
-//             currCard.remove();
-//             if (cart.length === 1) {
-//               displayNoItem(cardContainer, currPage);
-//             }
-//           }
-//         }
-//         cart = cart.filter((c) => c.count !== 0);
-//       } else {
-//         cartProduct.count++;
-//       }
-//       textQuantity.innerText = cartProduct.count;
-//       setLocalStorage("cart", cart);
-//     }
-
-//     if (currBtn.dataset.btnType === "add-to-cart") {
-//       addToCartClicked();
-//     } else {
-//       changeQuantityClicked();
-//       if (currPage === page.CART) {
-//         renderFooter(cart);
-//       }
-//     }
-//   });
-// }

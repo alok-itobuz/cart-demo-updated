@@ -1,4 +1,15 @@
-function createCustomizedElement(tagName, classNames, attributes, innerText) {}
+function createCustomizedElement(tagName, classNames, attributes, innerText) {
+  const elem = document.createElement(tagName);
+  if (classNames) elem.classList.add(...classNames);
+
+  attributes?.forEach((att) => {
+    elem.setAttribute(att[0], att[1]);
+  });
+
+  if (innerText) elem.innerText = innerText;
+
+  return elem;
+}
 
 export default function createCard(
   id,
@@ -6,87 +17,89 @@ export default function createCard(
   imageAlt,
   price,
   title,
-  count,
-  showAddToCart
+  count
 ) {
-  // return `<div class="card">
-  //   <div class="image-container">
-  //     <img src="${imagePath}" alt="${imageAlt}" />
-  //   </div>
-  //   <div class="text-container">
-  //     <h3>${title}</h3>
-  //     <p class="price">$ ${price}</p>
-  //   ${
-  //     showAddToCart
-  //       ? `<button class="add-to-cart add-to-cart-${id} ${
-  //           count !== 0 ? "display-none" : ""
-  //         }">Add to cart</button>`
-  //       : ""
-  //   }
-  //     <div class="card-buttons card-buttons-${id} ${
-  //   count === 0 ? "display-none" : ""
-  // }">
-  //       <button class="decrease">-</button>
-  //       <p class="item-count">${count}</p>
-  //       <button class="increase">+</button>
-  //     </div>
-  //   </div>
-  // </div>`;
+  const card = createCustomizedElement(
+    "div",
+    ["card"],
+    [["data-id", id]],
+    null
+  );
 
-  const card = document.createElement("div");
-  card.classList.add("card");
-  card.setAttribute("data-id", id);
+  const imageContainer = createCustomizedElement(
+    "div",
+    ["image-container"],
+    null,
+    null
+  );
 
-  // image container
-  const imageContainer = document.createElement("div");
-  imageContainer.classList.add("image-container");
-  const cardImage = document.createElement("img");
-  cardImage.src = imagePath;
-  cardImage.alt = imageAlt;
+  const cardImage = createCustomizedElement(
+    "img",
+    null,
+    [
+      ["src", imagePath],
+      ["alt", imageAlt],
+    ],
+    null
+  );
   imageContainer.appendChild(cardImage);
 
-  // text container
-  const textContainer = document.createElement("div");
-  textContainer.classList.add("text-container");
+  const textContainer = createCustomizedElement(
+    "div",
+    ["text-container"],
+    null,
+    null
+  );
 
-  const titleHeading = document.createElement("h3");
-  titleHeading.innerText = title;
-  const titleDescription = document.createElement("p");
-  titleDescription.classList.add("price");
-  titleDescription.innerText = `$ ${price}`;
+  const titleHeading = createCustomizedElement("h3", null, null, title);
 
-  // add to cart button
-  const btnAddToCart = document.createElement("button");
-  btnAddToCart.setAttribute("data-id", id);
-  btnAddToCart.setAttribute("data-btn-type", "add-to-cart");
-  btnAddToCart.classList.add("add-to-cart", `add-to-cart-${id}`);
+  const titleDescription = createCustomizedElement(
+    "p",
+    ["price"],
+    null,
+    `$ ${price}`
+  );
 
-  count ? btnAddToCart.classList.add("display-none") : "";
-  btnAddToCart.innerText = "Add to Cart";
-  showAddToCart ? textContainer.appendChild(btnAddToCart) : "";
+  const btnAddToCart = createCustomizedElement(
+    "button",
+    ["add-to-cart", `add-to-cart-${id}`, `display-${count ? "none" : ""}`],
+    [
+      ["data-id", id],
+      ["data-btn-type", "add-to-cart"],
+    ],
+    "Add to Cart"
+  );
 
   // card buttons
-  const cardButtons = document.createElement("div");
-  cardButtons.setAttribute("data-id", id);
-  cardButtons.classList.add("card-buttons", `card-buttons-${id}`);
-  count ? "" : cardButtons.classList.add("display-none");
-  const addQuantityBtn = document.createElement("button");
-  addQuantityBtn.setAttribute("data-id", id);
-  addQuantityBtn.classList.add("btn-change-quantity", "add-quantity");
-  addQuantityBtn.innerText = "+";
 
-  const itemCountText = document.createElement("p");
-  itemCountText.classList.add("item-count");
-  itemCountText.innerText = count;
+  const cardButtons = createCustomizedElement(
+    "div",
+    ["card-buttons", `card-buttons-${id}`, `display-${count ? "" : "none"}`],
+    [["data-id", id]]
+  );
 
-  const removeQuantityBtn = document.createElement("button");
-  removeQuantityBtn.setAttribute("data-id", id);
-  removeQuantityBtn.classList.add("btn-change-quantity", "remove-quantity");
-  removeQuantityBtn.innerText = "-";
+  const addQuantityBtn = createCustomizedElement(
+    "button",
+    ["btn-change-quantity", "add-quantity"],
+    [["data-id", id]],
+    "+"
+  );
 
-  cardButtons.appendChild(removeQuantityBtn);
-  cardButtons.appendChild(itemCountText);
-  cardButtons.appendChild(addQuantityBtn);
+  const itemCountText = createCustomizedElement(
+    "p",
+    ["item-count"],
+    null,
+    count
+  );
+
+  const removeQuantityBtn = createCustomizedElement(
+    "button",
+    ["btn-change-quantity", "remove-quantity"],
+    [["data-id", id]],
+    "-"
+  );
+
+  cardButtons.append(removeQuantityBtn, itemCountText, addQuantityBtn);
 
   textContainer.append(
     titleHeading,
@@ -94,6 +107,7 @@ export default function createCard(
     btnAddToCart,
     cardButtons
   );
+
   card.append(imageContainer, textContainer);
 
   return card;

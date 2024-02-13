@@ -76,6 +76,19 @@ async function sendOtp() {
     console.log("error", err);
   }
 }
+function validateEmail(email, password) {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const isEmailValid = emailRegex.test(email);
+
+  return isEmailValid;
+}
+function validatePassword(password) {
+  // minimum 8 letters, 1 letter, 1 number
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const isPasswordValid = passwordRegex.test(password);
+
+  return isPasswordValid;
+}
 
 btnGetOtp.addEventListener("click", async function (e) {
   e.preventDefault();
@@ -84,6 +97,20 @@ btnGetOtp.addEventListener("click", async function (e) {
 
   if (!name || !email || !password) {
     alert(`Name, Email and password field shouldn't be empty`);
+    return;
+  }
+
+  const isEmailValid = validateEmail(email);
+  if (!isEmailValid) {
+    alert("Enter a valid email address.");
+    return;
+  }
+  const isPasswordValid = validatePassword(password);
+  if (!isPasswordValid) {
+    alert(
+      "password must contains atlease 8 characters containg atleast a number and a letter."
+    );
+    return;
   }
 
   const usersData = getLocalstorage(keys.USERS);
