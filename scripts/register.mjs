@@ -11,22 +11,13 @@ const inputEmail = document.querySelector(".user-email");
 const inputPassword = document.querySelector(".user-password");
 const btnGetOtp = document.querySelector(".btn-get-otp");
 const inputOtp = document.querySelector(".user-otp");
+let otp = "";
 
 (function () {
   emailjs.init({
     publicKey: "ncD_lPd3l5AXg9fSl",
   });
 })();
-
-let otp = "";
-
-window.addEventListener("load", function (e) {
-  e.preventDefault();
-  redirectToIndex();
-  localStorage.removeItem(keys.OTP);
-  const storedOtp = getLocalstorage(keys.OTP);
-  otp = storedOtp;
-});
 
 function setFieldsEmpty() {
   inputName.value = "";
@@ -89,6 +80,14 @@ function validatePassword(password) {
 
   return isPasswordValid;
 }
+
+window.addEventListener("load", function (e) {
+  e.preventDefault();
+  redirectToIndex();
+  localStorage.removeItem(keys.OTP);
+  const storedOtp = getLocalstorage(keys.OTP);
+  otp = storedOtp;
+});
 
 btnGetOtp.addEventListener("click", async function (e) {
   e.preventDefault();

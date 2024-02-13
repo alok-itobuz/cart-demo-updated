@@ -24,7 +24,7 @@ window.addEventListener("load", function (e) {
     getLocalstorage("cart")[currentUser.email]?.length || 0;
 });
 
-const { name, email } = currentUser;
+const { email } = currentUser;
 const cart = getLocalstorage("cart") || {};
 
 if (products.length === 0) {

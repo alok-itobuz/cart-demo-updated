@@ -9,14 +9,14 @@ const loginForm = document.querySelector("#form");
 const inputEmail = document.querySelector(".user-email");
 const inputPassword = document.querySelector(".user-password");
 
-window.addEventListener("load", function (e) {
-  e.preventDefault();
-  redirectToIndex();
-});
-
 const getInputValues = () => ({
   email: inputEmail.value,
   password: inputPassword.value,
+});
+
+window.addEventListener("load", function (e) {
+  e.preventDefault();
+  redirectToIndex();
 });
 
 loginForm.addEventListener("submit", function (e) {

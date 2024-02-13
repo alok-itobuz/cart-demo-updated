@@ -22,7 +22,7 @@ window.addEventListener("load", function (e) {
 });
 
 let cart = getLocalstorage("cart") || {};
-const { email, name } = currentUser;
+const { email } = currentUser;
 if (!cart[email]) cart[email] = [];
 
 function renderPage() {
