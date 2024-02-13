@@ -1,7 +1,9 @@
-const keys = {
-  FORM_DATA: "form_data",
-  USERS: "users",
-};
+import {
+  getLocalstorage,
+  keys,
+  redirectToIndex,
+  setLocalStorage,
+} from "./components/helper.mjs";
 
 const form = document.querySelector("#form");
 const inputName = document.querySelector(".user-name");
@@ -18,24 +20,46 @@ const inputOtp = document.querySelector(".user-otp");
 
 let otp = "";
 
+window.addEventListener("load", function (e) {
+  e.preventDefault();
+  redirectToIndex();
+  localStorage.removeItem(keys.OTP);
+  const storedOtp = getLocalstorage(keys.OTP);
+  otp = storedOtp;
+});
+
+function setFieldsEmpty() {
+  inputName.value = "";
+  inputEmail.value = "";
+  inputPassword.value = "";
+  inputOtp.value = "";
+}
+
+function getInputValues() {
+  return {
+    name: inputName.value,
+    email: inputEmail.value,
+    password: inputPassword.value,
+    enteredOtp: inputOtp.value,
+  };
+}
+
 function generateOtp() {
-  const formData = getLocalstorage(keys.FORM_DATA);
-  if (formData && formData.otp) {
-    otp = formData.otp;
+  const storedOtp = getLocalstorage(keys.OTP);
+  if (storedOtp) {
+    otp = storedOtp;
   } else {
     otp = "";
     for (let i = 1; i <= 6; i++) {
       otp += Math.trunc(Math.random() * 9) + 1;
     }
-    setLocalstorage(keys.FORM_DATA, {
-      ...getLocalstorage(keys.FORM_DATA),
-      otp,
-    });
+    setLocalStorage(keys.OTP, otp);
   }
 }
 
 async function sendOtp() {
   generateOtp();
+  console.log(otp);
   const emailParams = {
     from_name: inputName.value,
     to_email: inputEmail.value,
@@ -53,58 +77,30 @@ async function sendOtp() {
   }
 }
 
-function setLocalstorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-function getLocalstorage(key) {
-  return JSON.parse(localStorage.getItem(key));
-}
-
-window.addEventListener("load", function (e) {
-  e.preventDefault();
-  const formDetails = getLocalstorage(keys.FORM_DATA);
-  if (formDetails) {
-    if (formDetails.name !== "undefined") inputName.value = formDetails.name;
-    if (formDetails.email !== "undefined") inputEmail.value = formDetails.email;
-    if (formDetails.password !== "undefined")
-      inputPassword.value = formDetails.password;
-    if (formDetails.otp !== "undefined") otp = formDetails.otp;
-  }
-});
-
 btnGetOtp.addEventListener("click", async function (e) {
   e.preventDefault();
-  const [name, email, password] = [
-    inputName.value,
-    inputEmail.value,
-    inputPassword.value,
-  ];
+
+  const { name, email, password } = getInputValues();
 
   if (!name || !email || !password) {
     alert(`Name, Email and password field shouldn't be empty`);
   }
-  let usersData = getLocalstorage(keys.USERS);
+
+  const usersData = getLocalstorage(keys.USERS);
   if (usersData && usersData[email]) {
     alert("user already exist");
-    localStorage.removeItem(keys.FORM_DATA);
+    localStorage.removeItem(keys.OTP);
+    setFieldsEmpty();
   } else {
-    const formData = getLocalstorage(keys.FORM_DATA);
-    if (!formData || formData.email !== email) {
-      setLocalstorage(keys.FORM_DATA, { name, email, password });
-    }
     await sendOtp();
   }
 });
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  console.log(e.target);
-  const [name, email, password, enteredOtp] = [
-    inputName.value,
-    inputEmail.value,
-    inputPassword.value,
-    inputOtp.value,
-  ];
+
+  const { name, email, password, enteredOtp } = getInputValues();
+
   if (!name || !email || !password || !enteredOtp) {
     alert(`Name, Email, password and otp field shouldn't be empty`);
   } else {
@@ -112,16 +108,11 @@ form.addEventListener("submit", function (e) {
       alert("Incorrect OTP");
     } else {
       let usersData = getLocalstorage(keys.USERS);
-      if (!usersData) {
-        usersData = { ...usersData, [email]: { name, password } };
-        setLocalstorage(keys.USERS, usersData);
-        location.href = "http://127.0.0.1:5501/pages/index.html";
-      }
+      usersData = { ...usersData, [email]: { name, password } };
+      setLocalStorage(keys.USERS, usersData);
+      setLocalStorage(keys.CURRENT_USER, { name, email });
+      location.href = `${location.origin}/pages/index.html`;
     }
-    localStorage.removeItem(keys.FORM_DATA);
-    inputName.value = "";
-    inputEmail.value = "";
-    inputPassword.value = "";
-    inputOtp.value = "";
+    localStorage.removeItem(keys.OTP);
   }
 });

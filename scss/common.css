@@ -19,12 +19,18 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 nav {
-  padding: 0.7rem 1rem;
   background: #d6b2b6;
+}
+nav .nav-body {
+  padding: 0.7rem;
+  margin: auto;
+  max-width: 90rem;
   display: flex;
   align-items: center;
   justify-content: end;
@@ -47,11 +53,13 @@ nav .route-link:hover {
 }
 
 .card-container {
+  max-width: 90rem;
   display: flex;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1rem 0;
   justify-content: center;
   flex-wrap: wrap;
+  margin: auto;
 }
 .card-container .card {
   flex: 1 0 17rem;

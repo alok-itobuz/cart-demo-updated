@@ -16,8 +16,8 @@ body {
 }
 
 #form {
-  width: 100%;
-  max-width: 43rem;
+  width: 95%;
+  max-width: 33rem;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -25,17 +25,20 @@ body {
   justify-content: center;
   gap: 2rem;
   padding: min(5%, 5rem);
-  background: #5b24a8;
+  background: linear-gradient(#caffdc 20%, #01999c 100%);
   border-radius: 10px;
 }
+#form h2 {
+  font-size: 2rem;
+}
 #form input {
-  color: #040503;
+  color: #fff;
 }
 #form input::-moz-placeholder {
-  color: #040503;
+  color: #fff;
 }
 #form input::placeholder {
-  color: #040503;
+  color: #fff;
 }
 #form input:focus {
   outline: none;
@@ -43,11 +46,11 @@ body {
 #form input,
 #form button {
   width: 100%;
-  font-size: min(6vw, 1.6rem);
-  padding: 1.4rem;
+  font-size: min(6vw, 1.1rem);
+  padding: 1rem;
   border-radius: 5px;
   border: none;
-  background: #ffe0f2;
+  background: hsl(187, 81%, 35%);
 }
 #form .get-otp-container {
   width: 100%;
@@ -56,9 +59,8 @@ body {
   justify-content: space-between;
 }
 #form .get-otp-container span {
-  visibility: hidden;
-  font-size: min(6vw, 1.6rem);
-  color: #fff;
+  font-size: min(6vw, 1.1rem);
+  color: hsl(0, 94%, 35%);
 }
 #form button:hover {
   cursor: pointer;
@@ -67,7 +69,7 @@ body {
   width: -moz-fit-content;
   width: fit-content;
   border: none;
-  color: rgb(238, 248, 179);
+  color: hsl(0, 94%, 35%);
   background: none;
   align-self: flex-start;
   padding: 1.4rem 0;

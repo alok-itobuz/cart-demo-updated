@@ -13,6 +13,7 @@
       method="post"
       enctype="text/plain"
     >
+      <h2>Registration Form</h2>
       <input
         type="text"
         placeholder="Your name"
@@ -32,7 +33,7 @@
       />
       <div class="get-otp-container">
         <button class="btn btn-get-otp">Get OTP</button>
-        <span>OTP sent successfully</span>
+        <a href="./login.html">Already have an account?</a>
       </div>
       <input
         type="number"
@@ -48,6 +49,6 @@
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
-    <script type="text/javascript" src="../scripts/register.mjs"></script>
+    <script type="module" src="../scripts/register.mjs"></script>
   </body>
 </html>
