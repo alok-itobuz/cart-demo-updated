@@ -26,6 +26,7 @@ window.addEventListener("load", function (e) {
 
 const { email } = currentUser;
 const cart = getLocalstorage("cart") || {};
+const wishlist = getLocalstorage("wishlist") || {};
 
 if (products.length === 0) {
   displayNoItem(homeCardContainer, page.HOME);
@@ -38,9 +39,19 @@ products.forEach(({ id, image, title, price }, i) => {
     title,
     price,
     title,
-    cart[email]?.find((c) => c.product.id === id)?.count ?? 0
+    cart[email]?.find((c) => c.product.id === id)?.count ?? 0,
+    true,
+    wishlist[email]?.find((p) => p.id === id) ? true : false
   );
   homeCardContainer.appendChild(card);
 });
 
-clickEventListener(email, products, cart, page.HOME, btnLogout, textSpanItem);
+clickEventListener(
+  email,
+  products,
+  cart,
+  page.HOME,
+  btnLogout,
+  textSpanItem,
+  wishlist
+);

@@ -17,7 +17,10 @@ export default function createCard(
   imageAlt,
   price,
   title,
-  count
+  count,
+  isWishlist,
+  isWishlisted,
+  isNotAddToCart = null
 ) {
   const card = createCustomizedElement(
     "div",
@@ -101,14 +104,25 @@ export default function createCard(
 
   cardButtons.append(removeQuantityBtn, itemCountText, addQuantityBtn);
 
-  textContainer.append(
-    titleHeading,
-    titleDescription,
-    btnAddToCart,
-    cardButtons
+  textContainer.append(titleHeading, titleDescription);
+
+  if (!isNotAddToCart) textContainer.append(btnAddToCart, cardButtons);
+
+  const wishlistInput = createCustomizedElement(
+    "input",
+    ["input-wishlist"],
+    [
+      ["data-id", id],
+      ["type", "checkbox"],
+      ["value", id],
+    ],
+    null
   );
 
+  if (isWishlisted) wishlistInput.setAttribute("checked", true);
+
   card.append(imageContainer, textContainer);
+  if (isWishlist) card.append(wishlistInput);
 
   return card;
 }

@@ -22,6 +22,7 @@ body {
   // flex-direction: column;
   overflow-y: scroll;
   background: #070f2b;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -30,6 +31,7 @@ body {
 nav {
   background: transparent;
   height: 4.5rem;
+
   .nav-body {
     height: 100%;
     width: 100%;
@@ -38,11 +40,13 @@ nav {
     align-items: center;
     justify-content: end;
     gap: 1rem;
+
     .cart-btn-container,
     .home-route-link,
     .btn-logout {
       width: 7rem;
       height: 80%;
+
       .route-link {
         display: inline-block;
         width: 100%;
@@ -52,6 +56,7 @@ nav {
         justify-content: center;
       }
     }
+
     .route-link,
     .btn-logout {
       font-size: 1.1rem;
@@ -62,6 +67,7 @@ nav {
       display: flex;
       align-items: center;
       justify-content: center;
+
       &:hover {
         cursor: pointer;
         border: none;
@@ -69,8 +75,10 @@ nav {
         box-shadow: 0px 13px 16px -10px #fff;
       }
     }
+
     .cart-btn-container {
       position: relative;
+
       span {
         position: absolute;
         width: 1.5rem;
@@ -89,6 +97,7 @@ nav {
     }
   }
 }
+
 // nav {
 //   background: transparent;
 //   height: 4.5rem;
@@ -174,6 +183,7 @@ nav {
     align-items: center;
     border-radius: 0.5rem;
     overflow: hidden;
+    position: relative;
 
     .image-container {
       overflow: hidden;
@@ -254,6 +264,24 @@ nav {
         }
       }
     }
+
+    .input-wishlist {
+      border: none;
+      outline: none;
+      position: absolute;
+      display: inline-block;
+      height: 1.2rem;
+      width: 1.2rem;
+      accent-color: #d000ff;
+      right: 1rem;
+      top: 1rem;
+
+      &:hover,
+      &:active {
+        border: none;
+        outline: none;
+      }
+    }
   }
 }
 
@@ -269,7 +297,7 @@ nav {
   padding: 1rem 3rem;
   color: #fff;
 
-  > div {
+  >div {
     display: flex;
     align-items: center;
     font-size: 1.1rem;
@@ -285,6 +313,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 1rem;
+
     button {
       width: fit-content;
       padding: 0.5rem 1rem;

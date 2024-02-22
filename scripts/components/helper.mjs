@@ -72,12 +72,25 @@ export function clickEventListener(
   cart,
   currPage,
   btnLogout,
-  textSpanItem
+  textSpanItem,
+  wishlist
 ) {
+  console.log({
+    email,
+    products,
+    cart,
+    currPage,
+    btnLogout,
+    textSpanItem,
+    wishlist,
+  });
   const cardContainer = document.querySelector(".card-container");
 
   cardContainer.addEventListener("click", function (e) {
-    if (e.target.tagName.toLowerCase() !== "button") {
+    if (
+      e.target.tagName.toLowerCase() !== "button" &&
+      e.target.tagName.toLowerCase() !== "input"
+    ) {
       return;
     }
 
@@ -88,9 +101,23 @@ export function clickEventListener(
     );
     const btnAddToCart = currCard.querySelector(".add-to-cart");
     const cardButtons = currCard.querySelector(".card-buttons");
-    const textQuantity = cardButtons.querySelector(".item-count");
+    const textQuantity = cardButtons?.querySelector(".item-count");
 
     // add to cart button clicked funtion
+    function updateWishlist(isChecked) {
+      if (!wishlist[email]) wishlist[email] = [];
+
+      const wishlistProduct = products?.slice()?.find((p) => p.id == currId);
+
+      isChecked
+        ? wishlist[email].push(wishlistProduct)
+        : (wishlist[email] = wishlist[email].filter(
+            (prod) => prod.id != currId
+          ));
+      if (!isChecked && currPage !== page.HOME) currCard.remove();
+      setLocalStorage("wishlist", wishlist);
+    }
+
     function addToCartClicked() {
       if (!cart[email]) cart[email] = [];
       btnAddToCart.classList.add("display-none");
@@ -112,6 +139,7 @@ export function clickEventListener(
     }
 
     function changeQuantityClicked() {
+      console.log("eh");
       const cartProduct = cart[email].find((c) => c.product.id == currId);
       if (currBtn.classList.contains("remove-quantity")) {
         cartProduct.count--;
@@ -142,6 +170,9 @@ export function clickEventListener(
 
     if (currBtn.dataset.btnType === "add-to-cart") {
       addToCartClicked();
+    } else if (currBtn.tagName.toLowerCase() === "input") {
+      const isChecked = currBtn.checked;
+      updateWishlist(isChecked);
     } else {
       changeQuantityClicked();
       if (currPage === page.CART) {

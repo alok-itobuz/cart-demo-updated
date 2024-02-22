@@ -109,6 +109,7 @@ nav .nav-body .cart-btn-container span {
   align-items: center;
   border-radius: 0.5rem;
   overflow: hidden;
+  position: relative;
 }
 .card-container .card .image-container {
   overflow: hidden;
@@ -180,6 +181,21 @@ nav .nav-body .cart-btn-container span {
 .card-container .card .text-container .card-buttons button:hover {
   cursor: pointer;
   box-shadow: 0 0 2rem -0.5rem #cf0808;
+}
+.card-container .card .input-wishlist {
+  border: none;
+  outline: none;
+  position: absolute;
+  display: inline-block;
+  height: 1.2rem;
+  width: 1.2rem;
+  accent-color: #d000ff;
+  right: 1rem;
+  top: 1rem;
+}
+.card-container .card .input-wishlist:hover, .card-container .card .input-wishlist:active {
+  border: none;
+  outline: none;
 }
 
 .cart-details-container {
