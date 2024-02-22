@@ -75,15 +75,6 @@ export function clickEventListener(
   textSpanItem,
   wishlist
 ) {
-  console.log({
-    email,
-    products,
-    cart,
-    currPage,
-    btnLogout,
-    textSpanItem,
-    wishlist,
-  });
   const cardContainer = document.querySelector(".card-container");
 
   cardContainer.addEventListener("click", function (e) {
